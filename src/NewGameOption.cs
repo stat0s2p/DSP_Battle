@@ -26,12 +26,12 @@ namespace DSP_Battle
         public static Text voidInvasionTitleText;
 
         public static float propertyObjX = 0;
-        public static float propertyObjY0 = -225;
-        public static float propertyObjY1 = -261;
-        public static float propertyObjY_UGT = -311;
+        public static float propertyObjY0 = -261;
+        public static float propertyObjY1 = -297;
+        public static float propertyObjY_UGT = -347;
         public static float seedKeyObjX = 0;
-        public static float seedKeyObjY0 = -251;
-        public static float seedKeyObjY1 = -287;
+        public static float seedKeyObjY0 = -287;
+        public static float seedKeyObjY1 = -323;
 
         public static Toggle DFToggle;
         public static int voidInvasionEnabledCache = 1;
@@ -79,15 +79,15 @@ namespace DSP_Battle
                 else
                 {
                     GameObject oriDFToggleObj = GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/setting-group/stretch-transform/DF-toggle");
-                    oriDFToggleObj.transform.localPosition = new Vector3(0, -180, 0);
-                    oriPropertyMultiplierObj.transform.localPosition = new Vector3(0, -225, 0);
-                    oriSeedKeyObj.transform.localPosition = new Vector3(0, -251, 0);
+                    oriDFToggleObj.transform.localPosition = new Vector3(0, -216, 0);
+                    oriPropertyMultiplierObj.transform.localPosition = new Vector3(0, propertyObjY0, 0);
+                    oriSeedKeyObj.transform.localPosition = new Vector3(0, seedKeyObjY0, 0);
 
                     if (CompatManager.UniverseGenTweak)
                     {
-                        oriDFToggleObj.transform.localPosition = new Vector3(400, -180, 0);
+                        oriDFToggleObj.transform.localPosition = new Vector3(400, -216, 0);
 
-                        oriSeedKeyObj.transform.localPosition = new Vector3(0, -251, 0);
+                        oriSeedKeyObj.transform.localPosition = new Vector3(0, seedKeyObjY0, 0);
                     }
                 }
             }
@@ -128,9 +128,9 @@ namespace DSP_Battle
                     //GameObject.DestroyImmediate(voidInvasionToggleObj.transform.Find("CheckBox"));
                     voidInvasionToggleObj.transform.Find("CheckBox").gameObject.SetActive(false);
                     voidInvasionToggleObj.transform.localScale = Vector3.one;
-                    voidInvasionToggleObj.transform.localPosition = new Vector3(0, -216, 0);
+                    voidInvasionToggleObj.transform.localPosition = new Vector3(0, -252, 0);
                     if (CompatManager.UniverseGenTweak)
-                        voidInvasionToggleObj.transform.localPosition = new Vector3(400, -216, 0);
+                        voidInvasionToggleObj.transform.localPosition = new Vector3(400, -252, 0);
 
                     GameObject VICheckBoxObj = GameObject.Instantiate(oriToggleWithIcon, voidInvasionToggleObj.transform);
                     VICheckBoxObj.transform.localScale = Vector3.one;
@@ -188,11 +188,11 @@ namespace DSP_Battle
                     voidInvasionToggleObj.SetActive(true);
                     voidInvasionTitleText.text = "虚空入侵".Translate();
                     voidInvasionLogo.color = new Color(1f, 1f, 1f, (voidInvasionEnabledCache == 1 ? 0.86f : 0.06f) + (voidInvasionUITg.isMouseEnter ? 0.14f : 0f));
-                    if (voidInvasionToggleObj.transform.localPosition.y != -216)
+                    if (voidInvasionToggleObj.transform.localPosition.y != -252)
                     {
-                        voidInvasionToggleObj.transform.localPosition = new Vector3(0, -216, 0);
+                        voidInvasionToggleObj.transform.localPosition = new Vector3(0, -252, 0);
                         if (CompatManager.UniverseGenTweak)
-                            voidInvasionToggleObj.transform.localPosition = new Vector3(400, -216, 0);
+                            voidInvasionToggleObj.transform.localPosition = new Vector3(400, -252, 0);
 
                     }
                 }
