@@ -12,9 +12,7 @@ namespace DSP_Battle
     class NewGameOption
     {
         public static bool fastStart = false;
-        public static bool fastStart2 = false;
         public static GameObject fastStartObj = null;
-        public static GameObject fastStart2Obj = null;
         public static GameObject voidInvasionToggleObj = null;
 
         public static  GameObject oriPropertyMultiplierObj;
@@ -41,7 +39,6 @@ namespace DSP_Battle
         public static void UIGalaxySelect_OnOpen(ref UIGalaxySelect __instance)
         {
             fastStart = false;
-            fastStart2 = false;
             if (CompatManager.UniverseGenTweak)
             {
                 propertyObjY1 = propertyObjY_UGT;
@@ -92,29 +89,6 @@ namespace DSP_Battle
                 }
             }
 
-            if (fastStart2Obj == null)
-            {
-                if (oriSettingObj == null)
-                    return;
-                fastStart2Obj = GameObject.Instantiate(oriSettingObj);
-                fastStart2Obj.name = "fast-start-mode-2";
-                fastStart2Obj.transform.SetParent(GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/setting-group/stretch-transform").transform, false);
-                fastStart2Obj.transform.localPosition = new Vector3(0, -180, 0);
-                if (CompatManager.UniverseGenTweak)
-                    fastStart2Obj.transform.localPosition = new Vector3(400, -180, 0);
-                fastStart2Obj.GetComponent<Text>().text = "快速开局2".Translate();
-                fastStart2Obj.GetComponentInChildren<UIButton>().tips.tipTitle = "快速开局2".Translate();
-                fastStart2Obj.GetComponentInChildren<UIButton>().tips.tipText = "快速开局2提示".Translate();
-                fastStart2Obj.GetComponentInChildren<Toggle>().onValueChanged.RemoveAllListeners();
-                fastStart2Obj.GetComponentInChildren<Toggle>().onValueChanged.AddListener(new UnityEngine.Events.UnityAction<bool>((isOn) => { OnFastStart2Toggle(isOn); }));
-                fastStart2Obj.GetComponentInChildren<Toggle>().isOn = DspBattlePlugin.fastStart2.Value;
-
-                if (MoreMegaStructure.MoreMegaStructure.GenesisCompatibility)
-                {
-                    fastStart2Obj.SetActive(false);
-                    fastStart2 = false;
-                }
-            }
             if (Configs.enableVoidInvasionUpdate)
             {
                 if (voidInvasionToggleObj == null)
@@ -163,8 +137,6 @@ namespace DSP_Battle
         {
             if(fastStartObj != null)
                 GameObject.Destroy(fastStartObj);
-            if (fastStart2Obj != null)
-                GameObject.Destroy(fastStart2Obj);
             if (voidInvasionToggleObj != null)
                 GameObject.Destroy(voidInvasionToggleObj);    
         }
@@ -176,8 +148,6 @@ namespace DSP_Battle
         {
             if (fastStartObj != null)
                 fastStartObj.GetComponent<Text>().text = "快速开局".Translate();
-            if (fastStart2Obj != null)
-                fastStart2Obj.GetComponent<Text>().text = "快速开局2".Translate();
             if (Configs.enableVoidInvasionUpdate)
             {
                 if (__instance.gameDesc.isCombatMode)
@@ -210,7 +180,6 @@ namespace DSP_Battle
         public static void GameSave_LoadCurrentGame()
         {
             fastStart = false;
-            fastStart2 = false;
             voidInvasionEnabledCache = 0; // 读取游戏时阻止cache改变虚空入侵的开关，因为只有1或-1的时候才会更改虚空入侵的开关设定
         }
 
@@ -270,6 +239,8 @@ namespace DSP_Battle
                     DspBattlePlugin.logger.LogDebug($"FastStart2 failed to parse tech config: {techConfig}");
                 return;
             }
+
+            ClearPackageBeforeFastStart2Items();
 
             bool itemParsed = ParseAndAddItems(itemConfig);
             if (!itemParsed)
@@ -346,6 +317,28 @@ namespace DSP_Battle
             }
 
             return parsedAny;
+        }
+
+
+        private static void ClearPackageBeforeFastStart2Items()
+        {
+            if (GameMain.data?.mainPlayer?.package == null)
+                return;
+
+            StorageComponent package = GameMain.data.mainPlayer.package;
+            foreach (ItemProto proto in LDB.items.dataArray)
+            {
+                if (proto == null)
+                    continue;
+
+                int itemId = proto.ID;
+                int itemCount = package.GetItemCount(itemId);
+                if (itemCount <= 0)
+                    continue;
+
+                int inc;
+                package.TakeTailItems(ref itemId, ref itemCount, out inc);
+            }
         }
 
 
@@ -426,12 +419,6 @@ namespace DSP_Battle
         {
             DspBattlePlugin.fastStart.Value = isOn;
             DspBattlePlugin.fastStart.ConfigFile.Save();
-        }
-
-        public static void OnFastStart2Toggle(bool isOn)
-        {
-            DspBattlePlugin.fastStart2.Value = isOn;
-            DspBattlePlugin.fastStart2.ConfigFile.Save();
         }
 
         public static void OnDFToggle(bool isOn)
