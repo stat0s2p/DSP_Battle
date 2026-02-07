@@ -1,0 +1,9 @@
+<Project>
+  <PropertyGroup>
+    <!-- 本地 Dyson Sphere Program 安装目录（不要带末尾反斜杠） -->
+    <DSP_GAME_DIR>C:\Program Files (x86)\Steam\steamapps\common\Dyson Sphere Program</DSP_GAME_DIR>
+
+    <!-- 可选：设为 true 时，构建后自动复制到 BepInEx\plugins -->
+    <DeployToGameDir>false</DeployToGameDir>
+  </PropertyGroup>
+</Project>

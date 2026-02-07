@@ -183,6 +183,7 @@
     <EmbeddedResource Include="battlebgm" />
     <None Include="packages.config" />
     <None Include="README.md" />
+    <None Include="Directory.Build.props.example" />
   </ItemGroup>
   <ItemGroup />
   <Target Name="ValidateGameDeploySettings" BeforeTargets="DeployToGame" Condition="'$(DeployToGameDir)' == 'true' and '$(DSP_GAME_DIR)' == ''">

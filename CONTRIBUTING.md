@@ -26,8 +26,20 @@
 ### Visual Studio
 
 1. 打开 `DSP_Battle.sln`
-2. 在项目属性或 `Directory.Build.props`（本地不提交）中设置：
-   - `DSP_GAME_DIR=你的游戏目录`
+2. 推荐在仓库根目录新建 `Directory.Build.props`（本地使用，不提交）并填写如下内容：
+
+   ```xml
+   <Project>
+     <PropertyGroup>
+       <DSP_GAME_DIR>C:\\Program Files (x86)\\Steam\\steamapps\\common\\Dyson Sphere Program</DSP_GAME_DIR>
+       <DeployToGameDir>false</DeployToGameDir>
+     </PropertyGroup>
+   </Project>
+   ```
+
+   > 注意：`Directory.Build.props` 必须是合法 XML。
+   > 不能写成 `DSP_GAME_DIR="..."` 这种纯文本形式，否则会报“根级别上的数据无效”。
+
 3. 直接 Build（Debug/Release）
 
 ### 命令行
@@ -61,3 +73,10 @@ msbuild .\DSP_Battle.csproj /t:Build /p:Configuration=Debug /p:DSP_GAME_DIR="D:\
   - 命令行 `/p:DSP_GAME_DIR=...`
   - 或本地私有配置文件（不提交）。
 - 提交前至少执行一次本地 Build，并确认项目仍可在未自动部署模式下输出到 `bin` 目录。
+
+
+## 7. 常见错误
+
+- **错误：** `未能加载导入的项目文件 ... Directory.Build.props。根级别上的数据无效。第 1 行，位置 1。`
+  - **原因：** `Directory.Build.props` 不是 XML 文件（例如只写了一行 `DSP_GAME_DIR="..."`）。
+  - **修复：** 按上文 XML 模板重建该文件，或直接复制 `Directory.Build.props.example` 为 `Directory.Build.props` 后再改路径。
