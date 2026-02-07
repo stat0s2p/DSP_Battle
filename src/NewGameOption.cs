@@ -2,6 +2,7 @@
 using DSP_Battle.src.Compat;
 using HarmonyLib;
 using rail;
+using System;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,7 +12,9 @@ namespace DSP_Battle
     class NewGameOption
     {
         public static bool fastStart = false;
+        public static bool fastStart2 = false;
         public static GameObject fastStartObj = null;
+        public static GameObject fastStart2Obj = null;
         public static GameObject voidInvasionToggleObj = null;
 
         public static  GameObject oriPropertyMultiplierObj;
@@ -38,6 +41,7 @@ namespace DSP_Battle
         public static void UIGalaxySelect_OnOpen(ref UIGalaxySelect __instance)
         {
             fastStart = false;
+            fastStart2 = false;
             if (CompatManager.UniverseGenTweak)
             {
                 propertyObjY1 = propertyObjY_UGT;
@@ -85,6 +89,30 @@ namespace DSP_Battle
 
                         oriSeedKeyObj.transform.localPosition = new Vector3(0, -251, 0);
                     }
+                }
+            }
+
+            if (fastStart2Obj == null)
+            {
+                if (oriSettingObj == null)
+                    return;
+                fastStart2Obj = GameObject.Instantiate(oriSettingObj);
+                fastStart2Obj.name = "fast-start-mode-2";
+                fastStart2Obj.transform.SetParent(GameObject.Find("UI Root/Overlay Canvas/Galaxy Select/setting-group/stretch-transform").transform, false);
+                fastStart2Obj.transform.localPosition = new Vector3(0, -180, 0);
+                if (CompatManager.UniverseGenTweak)
+                    fastStart2Obj.transform.localPosition = new Vector3(400, -180, 0);
+                fastStart2Obj.GetComponent<Text>().text = "快速开局2".Translate();
+                fastStart2Obj.GetComponentInChildren<UIButton>().tips.tipTitle = "快速开局2".Translate();
+                fastStart2Obj.GetComponentInChildren<UIButton>().tips.tipText = "快速开局2提示".Translate();
+                fastStart2Obj.GetComponentInChildren<Toggle>().onValueChanged.RemoveAllListeners();
+                fastStart2Obj.GetComponentInChildren<Toggle>().onValueChanged.AddListener(new UnityEngine.Events.UnityAction<bool>((isOn) => { OnFastStart2Toggle(isOn); }));
+                fastStart2Obj.GetComponentInChildren<Toggle>().isOn = DspBattlePlugin.fastStart2.Value;
+
+                if (MoreMegaStructure.MoreMegaStructure.GenesisCompatibility)
+                {
+                    fastStart2Obj.SetActive(false);
+                    fastStart2 = false;
                 }
             }
             if (Configs.enableVoidInvasionUpdate)
@@ -135,6 +163,8 @@ namespace DSP_Battle
         {
             if(fastStartObj != null)
                 GameObject.Destroy(fastStartObj);
+            if (fastStart2Obj != null)
+                GameObject.Destroy(fastStart2Obj);
             if (voidInvasionToggleObj != null)
                 GameObject.Destroy(voidInvasionToggleObj);    
         }
@@ -146,6 +176,8 @@ namespace DSP_Battle
         {
             if (fastStartObj != null)
                 fastStartObj.GetComponent<Text>().text = "快速开局".Translate();
+            if (fastStart2Obj != null)
+                fastStart2Obj.GetComponent<Text>().text = "快速开局2".Translate();
             if (Configs.enableVoidInvasionUpdate)
             {
                 if (__instance.gameDesc.isCombatMode)
@@ -178,6 +210,7 @@ namespace DSP_Battle
         public static void GameSave_LoadCurrentGame()
         {
             fastStart = false;
+            fastStart2 = false;
             voidInvasionEnabledCache = 0; // 读取游戏时阻止cache改变虚空入侵的开关，因为只有1或-1的时候才会更改虚空入侵的开关设定
         }
 
@@ -208,9 +241,111 @@ namespace DSP_Battle
             {
                 if (DspBattlePlugin.fastStart.Value && !CompatManager.GB)
                     Init();
+                if (DspBattlePlugin.fastStart2.Value && !CompatManager.GB)
+                    Init2();
 
                 AssaultController.voidInvasionEnabled = DspBattlePlugin.invasionActiveByDefault.Value;
             }
+        }
+
+        private static void Init2()
+        {
+            bool isCombat = GameMain.data.gameDesc.isCombatMode;
+            string techConfig = isCombat ? DspBattlePlugin.fastStart2TechCombat.Value : DspBattlePlugin.fastStart2TechNonCombat.Value;
+            string itemConfig = isCombat ? DspBattlePlugin.fastStart2ItemsCombat.Value : DspBattlePlugin.fastStart2ItemsNonCombat.Value;
+
+            bool hasTechConfig = !string.IsNullOrWhiteSpace(techConfig);
+            bool hasItemConfig = !string.IsNullOrWhiteSpace(itemConfig);
+
+            if (!hasTechConfig && !hasItemConfig)
+            {
+                DspBattlePlugin.logger.LogDebug("FastStart2 config is empty.");
+                return;
+            }
+
+            if (hasTechConfig)
+            {
+                bool techParsed = ParseAndUnlockTech(techConfig);
+                if (!techParsed)
+                    DspBattlePlugin.logger.LogDebug($"FastStart2 failed to parse tech config: {techConfig}");
+                return;
+            }
+
+            bool itemParsed = ParseAndAddItems(itemConfig);
+            if (!itemParsed)
+                DspBattlePlugin.logger.LogDebug($"FastStart2 failed to parse item config: {itemConfig}");
+        }
+
+        private static bool ParseAndUnlockTech(string techConfig)
+        {
+            if (string.IsNullOrWhiteSpace(techConfig))
+                return false;
+
+            bool parsedAny = false;
+            string[] techList = techConfig.Split(';');
+            for (int i = 0; i < techList.Length; i++)
+            {
+                string raw = techList[i].Trim();
+                if (string.IsNullOrEmpty(raw))
+                    continue;
+
+                int techId;
+                if (!int.TryParse(raw, out techId))
+                    return false;
+
+                TechProto proto = LDB.techs.Select(techId);
+                if (proto == null)
+                    return false;
+
+                if (!GameMain.data.history.TechUnlocked(techId))
+                    GameMain.data.history.UnlockTechUnlimited(techId, true);
+
+                parsedAny = true;
+            }
+
+            return parsedAny;
+        }
+
+        private static bool ParseAndAddItems(string itemConfig)
+        {
+            if (string.IsNullOrWhiteSpace(itemConfig))
+                return false;
+
+            bool parsedAny = false;
+            string[] itemList = itemConfig.Split(';');
+            for (int i = 0; i < itemList.Length; i++)
+            {
+                string raw = itemList[i].Trim();
+                if (string.IsNullOrEmpty(raw))
+                    continue;
+
+                string[] pair = raw.Split(':');
+                if (pair.Length > 2 || pair.Length == 0)
+                    return false;
+
+                int itemId;
+                if (!int.TryParse(pair[0].Trim(), out itemId))
+                    return false;
+
+                int itemCount = 1;
+                if (pair.Length == 2)
+                {
+                    if (!int.TryParse(pair[1].Trim(), out itemCount))
+                        return false;
+                }
+
+                if (itemCount <= 0)
+                    return false;
+
+                ItemProto proto = LDB.items.Select(itemId);
+                if (proto == null)
+                    return false;
+
+                GameMain.data.mainPlayer.TryAddItemToPackage(itemId, itemCount, 0, false);
+                parsedAny = true;
+            }
+
+            return parsedAny;
         }
 
 
@@ -291,6 +426,12 @@ namespace DSP_Battle
         {
             DspBattlePlugin.fastStart.Value = isOn;
             DspBattlePlugin.fastStart.ConfigFile.Save();
+        }
+
+        public static void OnFastStart2Toggle(bool isOn)
+        {
+            DspBattlePlugin.fastStart2.Value = isOn;
+            DspBattlePlugin.fastStart2.ConfigFile.Save();
         }
 
         public static void OnDFToggle(bool isOn)
