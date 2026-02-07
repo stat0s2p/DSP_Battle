@@ -14,6 +14,7 @@
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
     <DSP_GAME_DIR Condition="'$(DSP_GAME_DIR)' == ''"></DSP_GAME_DIR>
+    <DSP_GAME_DIR Condition="'$(DSP_GAME_DIR)' != ''">$([System.String]::Copy('$(DSP_GAME_DIR)').Trim().Trim('&#x22;'))</DSP_GAME_DIR>
     <DeployToGameDir Condition="'$(DeployToGameDir)' == ''">false</DeployToGameDir>
     <GamePluginsDir Condition="'$(DSP_GAME_DIR)' != ''">$(DSP_GAME_DIR)\BepInEx\plugins\</GamePluginsDir>
     <GameCoreDir Condition="'$(DSP_GAME_DIR)' != ''">$(DSP_GAME_DIR)\BepInEx\core\</GameCoreDir>
@@ -186,6 +187,10 @@
     <None Include="Directory.Build.props.example" />
   </ItemGroup>
   <ItemGroup />
+  <Target Name="ValidateGameDirectory" BeforeTargets="ResolveAssemblyReferences" Condition="'$(DSP_GAME_DIR)' != ''">
+    <Error Condition="!Exists('$(GameCoreDir)BepInEx.dll')" Text="BepInEx.dll not found at $(GameCoreDir)BepInEx.dll. Check DSP_GAME_DIR (should point to game root) and BepInEx installation." />
+    <Error Condition="!Exists('$(GameManagedDir)UnityEngine.CoreModule.dll')" Text="Unity managed assemblies not found at $(GameManagedDir). Check DSP_GAME_DIR (should point to Dyson Sphere Program root)." />
+  </Target>
   <Target Name="ValidateGameDeploySettings" BeforeTargets="DeployToGame" Condition="'$(DeployToGameDir)' == 'true' and '$(DSP_GAME_DIR)' == ''">
     <Error Text="DSP_GAME_DIR must be set when DeployToGameDir=true." />
   </Target>
@@ -196,6 +201,13 @@
     </ItemGroup>
     <MakeDir Directories="$(GamePluginsDir)" Condition="!Exists('$(GamePluginsDir)')" />
     <Copy SourceFiles="@(DeployFiles)" DestinationFolder="$(GamePluginsDir)" SkipUnchangedFiles="true" />
+  </Target>
+  <Target Name="PrintResolvedPaths">
+    <Message Importance="high" Text="DSP_GAME_DIR=$(DSP_GAME_DIR)" />
+    <Message Importance="high" Text="GameCoreDir=$(GameCoreDir)" />
+    <Message Importance="high" Text="GameManagedDir=$(GameManagedDir)" />
+    <Message Importance="high" Text="GamePluginsDir=$(GamePluginsDir)" />
+    <Message Importance="high" Text="DeployToGameDir=$(DeployToGameDir)" />
   </Target>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

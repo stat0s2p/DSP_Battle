@@ -39,6 +39,7 @@
 
    > 注意：`Directory.Build.props` 必须是合法 XML。
    > 不能写成 `DSP_GAME_DIR="..."` 这种纯文本形式，否则会报“根级别上的数据无效”。
+   > `DSP_GAME_DIR` 必须指向**游戏根目录**（含 `DSPGAME.exe` 与 `DSPGAME_Data`），不是 `BepInEx` 子目录。
 
 3. 直接 Build（Debug/Release）
 
@@ -80,3 +81,12 @@ msbuild .\DSP_Battle.csproj /t:Build /p:Configuration=Debug /p:DSP_GAME_DIR="D:\
 - **错误：** `未能加载导入的项目文件 ... Directory.Build.props。根级别上的数据无效。第 1 行，位置 1。`
   - **原因：** `Directory.Build.props` 不是 XML 文件（例如只写了一行 `DSP_GAME_DIR="..."`）。
   - **修复：** 按上文 XML 模板重建该文件，或直接复制 `Directory.Build.props.example` 为 `Directory.Build.props` 后再改路径。
+
+- **现象：** 已设置 `DSP_GAME_DIR` 但引用仍无法解析。
+  - **排查 1：** 确认 `DSP_GAME_DIR` 指向游戏根目录，而非 `...\BepInEx`。
+  - **排查 2：** 若用系统环境变量，修改后需重启 Visual Studio 使其生效。
+  - **排查 3：** 构建时会检查 `$(DSP_GAME_DIR)\BepInEx\core\BepInEx.dll` 与 `$(DSP_GAME_DIR)\DSPGAME_Data\Managed\UnityEngine.CoreModule.dll` 是否存在。
+
+- **现象：** 只有 `CommonAPI` / `NebulaAPI` / `DSPModSave` / `LDBTool` / `MoreMegaStructure` 等引用报未解析。
+  - **原因：** 这些 DLL 来自 BepInEx 插件目录，需要本机已安装对应前置模组。
+  - **修复：** 在游戏 `BepInEx\plugins` 中安装对应前置模组（或将其 DLL 放入约定位置）后重新加载项目。

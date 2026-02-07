@@ -1,0 +1,9 @@
+# Keep MSBuild/VS project files in Windows-friendly CRLF to reduce noisy diffs/merge conflicts
+*.sln text eol=crlf
+*.csproj text eol=crlf
+*.props text eol=crlf
+*.targets text eol=crlf
+
+# Keep docs/scripts in LF
+*.md text eol=lf
+*.sh text eol=lf
