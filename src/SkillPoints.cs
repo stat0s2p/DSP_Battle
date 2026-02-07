@@ -70,6 +70,7 @@ namespace DSP_Battle
         {
             // SkillPoints.totalPoints = Math.Max(SkillPoints.totalPoints, SkillPoints.spMinByRank[Rank.rank]);
             RefreshCargoAccIncTable();
+            RefreshMiningSpeed();
             RefreshInGameData();
         }
 
@@ -106,7 +107,7 @@ namespace DSP_Battle
                             RefreshMiningConsumption();
                             break;
                         case 5:
-                            GameMain.data.history.miningSpeedScale += skillValuesL[i] / 100.0f * allocatePoints;
+                            RefreshMiningSpeed();
                             break;
                         case 6:
                         case 7:
@@ -177,7 +178,7 @@ namespace DSP_Battle
                             RefreshMiningConsumption();
                             break;
                         case 5:
-                            GameMain.data.history.miningSpeedScale -= skillValuesL[i] / 100.0f * allocatedPoints;
+                            RefreshMiningSpeed();
                             break;
                         case 6:
                         case 7:
@@ -232,18 +233,28 @@ namespace DSP_Battle
             }
 
             float byAp = 1.0f;
-            if (Rank.rank >= 10)
-                byAp = 0.2f;
-            else if (Rank.rank >= 7)
-                byAp = 0.6f;
-            else if (Rank.rank >= 4)
-                byAp = 0.8f;
-
             byAp += skillValuesL[4] / 100.0f * skillLevelL[4];
             if (byAp < 0)
                 byAp = 0;
             
             history.miningCostRate = byResearh * byAp;
+        }
+
+        public static void RefreshMiningSpeed()
+        {
+            float byRank = 1.0f;
+            if (Rank.rank >= 10)
+                byRank = 1.4f;
+            else if (Rank.rank >= 7)
+                byRank = 1.2f;
+            else if (Rank.rank >= 4)
+                byRank = 1.1f;
+
+            float byAp = 1.0f + skillValuesL[5] / 100.0f * skillLevelL[5];
+            if (byAp < 0)
+                byAp = 0;
+
+            GameMain.data.history.miningSpeedScale = byRank * byAp;
         }
 
         public static void RefreshCargoAccIncTable()

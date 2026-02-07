@@ -400,6 +400,8 @@ namespace DSP_Battle
 
             RegisterString("快速开局", "Fast Start", "快速开局");
             RegisterString("快速开局提示", "Unlock some techs at the begining, and start with additional items.", "开局立即解锁额外科技，并提供额外物品。");
+            RegisterString("快速开局2", "Fast Start 2", "快速开局2");
+            RegisterString("快速开局2提示", "Grant items and unlock technologies according to FastStart2 config text.", "根据FastStart2配置文本发放物品并解锁科技。");
             RegisterString("mod版本信息", "Current version: " + Configs.versionString + "                Contact me in Discord: ckcz123#3576", "当前版本：" + Configs.versionString + "          欢迎加入mod交流群：" + Configs.qq);
             //RegisterString("未探测到威胁", "No threat detected", "未探测到威胁");
             //RegisterString("预估数量", "Estimated quantity", "预估数量");
@@ -526,24 +528,24 @@ namespace DSP_Battle
             RegisterString("gmRankUnlockText1", "Enhanced core energy generation", "获得额外的核心发电");
             RegisterString("gmRankUnlockText2", "Energy shield gains 25% damage reduction", "能量盾获得25%伤害减免");
             RegisterString("gmRankUnlockText3", "Walk speed increases", "步行移动速度增加");
-            RegisterString("gmRankUnlockText4", "Ore loss per mining operation -20%", "采矿消耗 -20%");
+            RegisterString("gmRankUnlockText4", "Mining speed +10%", "采矿速度 +10%");
             RegisterString("gmRankUnlockText5", "EM effect +20%", "电磁武器效果 +20%");
             RegisterString("gmRankUnlockText6", "Droplets can quickly approach distant target", "水滴能够快速接近远距离的目标");
-            RegisterString("gmRankUnlockText7", "Ore loss per mining operation -20%\n-  Calling planetary purge permission", "采矿消耗 -20%\n-  呼叫行星清洗许可");
+            RegisterString("gmRankUnlockText7", "Mining speed +20%\n-  Calling planetary purge permission", "采矿速度 +20%\n-  呼叫行星清洗许可");
             RegisterString("gmRankUnlockText8", "Star cannon charging speed +50%", "恒星炮充能速度 +50%");
             RegisterString("gmRankUnlockText9", "Droplet damage +100%", "水滴伤害 +100%");
-            RegisterString("gmRankUnlockText10", "Ore loss per mining operation -40%", "采矿消耗 -40%");
+            RegisterString("gmRankUnlockText10", "Mining speed +40%", "采矿速度 +40%");
             RegisterString("gmRankUnlockText10Add", "You are allowed to provide computing power to the COSMO Technology Ethics Committee in exchange for merit points", "你被允许向COSMO技术伦理委员会提供算力以换取功勋点数");
             RegisterString("gmRankReward1", "Core power generation +1 MW", "核心发电 +1MW");
             RegisterString("gmRankReward2", "Energy shield damage reduction +25%", "能量盾伤害减免 +25%");
             RegisterString("gmRankReward3", "Walk speed +4 m/s", "步行移动速度 +4 m/s");
-            RegisterString("gmRankReward4", "Ore loss per mining operation -20%", "采矿消耗 -20%");
+            RegisterString("gmRankReward4", "Mining speed +10%", "采矿速度 +10%");
             RegisterString("gmRankReward5", "EM effect +20%", "电磁武器效果 +20%");
             RegisterString("gmRankReward6", "Droplets can quickly approach distant target", "水滴能够快速接近远距离的目标");
-            RegisterString("gmRankReward7", "Ore loss per mining operation -40%", "采矿消耗 -40%");
+            RegisterString("gmRankReward7", "Mining speed +20%", "采矿速度 +20%");
             RegisterString("gmRankReward8", "Star cannon charging speed +50%", "恒星炮充能速度 +50%");
             RegisterString("gmRankReward9", "Droplet damage +100%", "水滴伤害 +100%");
-            RegisterString("gmRankReward10", "Ore loss per mining operation  -80%", "采矿消耗 -80%");
+            RegisterString("gmRankReward10", "Mining speed +40%", "采矿速度 +40%");
             RegisterString("gmRankReward7Add", "Calling planetary purge permission", "呼叫行星清洗许可");
             RegisterString("功勋阶级", "Merit Rank", "功勋阶级");
             RegisterString("当前阶级", "Current Rank", "当前等级");
@@ -965,7 +967,7 @@ namespace DSP_Battle
             RegisterString("深空来敌介绍1标题", "They come from void player guide", "深空来敌玩法介绍");
             RegisterString("深空来敌介绍1前字", "Nothing here for now. You can check the meta driver infomation below.", "这里暂时没有东西。你可以翻看下面的元驱动介绍。");
 
-            RegisterString("深空来敌介绍2前字", "By destroying dark fog units, you can gain experience points to promote your merit rank, and accumulate combat experience to strengthen yourself. Every time you reach the new merit rank, you will not only receive authorization points award issued by the COSMO Technology Ethics Committee, but also permanent bonus effects. Authorization points can be assigned on demand by clicking on the merit rank icon in the upper right corner, some providing bonuses for your production line, while others strengthening your combat capabilities. You can also view the bonus effect of the current rank, the experience requirements of the next level, and the bonus effect of the next level by hovering the mouse over the merit rank icon in the upper right corner. After advancing to the final rank, you will still be able to continuously earn merit points to get authorization points from the COSMO Technology Ethics Committee.\n\nExplorer I: Core power generation +1 MW\nExplorer II: Energy shield damage reduction +25%\nExplorer III: Walk speed +4 m/s\nPioneer I: Ore loss per mining operation -20%\nPioneer II: EM effect +20%\nPioneer III: Droplets can quickly approach distant target\nConqueror I: Ore loss per mining operation -20%\nConqueror II: Star cannon charging speed +50%\nConqueror III: Droplet damage +100%\nGalaxy Guardian: Ore loss per mining operation  -40%", "通过击毁黑雾单位，你可以获得经验点数来提升功勋阶级，并积累战斗经验来强化自身。每次提升功勋阶级，你除了会收到由COSMO技术伦理委员会发放的授权点奖励外，还将获得固定的永久加成效果。授权点奖励可以通过点击右上角的功勋阶级图标进行按需分配，有些为你的生产线提供加成，有些则强化你的战斗能力。你也可以通过将鼠标悬停在右上角的功勋阶级图标上来查看当前等级的加成效果，下一等级的经验需求和下一等级的加成效果。在提升到最终等级后，你仍然可以不断获取功勋点数，以不断从COSMO技术伦理委员会处获取授权点奖励。\n\n探索者 I: 核心发电 +1MW\n探索者 II: 能量盾伤害减免 +25%\n探索者 III: 步行移动速度 +4 m/s\n开拓者 I: 采矿消耗 -20%\n开拓者 II: 电磁武器效果 +20%\n开拓者 III: 水滴能够快速接近远距离的目标\n征服者 I: 采矿消耗 -20%\n征服者 II: 恒星炮充能速度 +50%\n征服者 III: 水滴伤害 +100%\n星河卫士: 采矿消耗 -40%");
+            RegisterString("深空来敌介绍2前字", "By destroying dark fog units, you can gain experience points to promote your merit rank, and accumulate combat experience to strengthen yourself. Every time you reach the new merit rank, you will not only receive authorization points award issued by the COSMO Technology Ethics Committee, but also permanent bonus effects. Authorization points can be assigned on demand by clicking on the merit rank icon in the upper right corner, some providing bonuses for your production line, while others strengthening your combat capabilities. You can also view the bonus effect of the current rank, the experience requirements of the next level, and the bonus effect of the next level by hovering the mouse over the merit rank icon in the upper right corner. After advancing to the final rank, you will still be able to continuously earn merit points to get authorization points from the COSMO Technology Ethics Committee.\n\nExplorer I: Core power generation +1 MW\nExplorer II: Energy shield damage reduction +25%\nExplorer III: Walk speed +4 m/s\nPioneer I: Mining speed +10%\nPioneer II: EM effect +20%\nPioneer III: Droplets can quickly approach distant target\nConqueror I: Mining speed +20%\n- Calling planetary purge permission\nConqueror II: Star cannon charging speed +50%\nConqueror III: Droplet damage +100%\nGalaxy Guardian: Mining speed +40%", "通过击毁黑雾单位，你可以获得经验点数来提升功勋阶级，并积累战斗经验来强化自身。每次提升功勋阶级，你除了会收到由COSMO技术伦理委员会发放的授权点奖励外，还将获得固定的永久加成效果。授权点奖励可以通过点击右上角的功勋阶级图标进行按需分配，有些为你的生产线提供加成，有些则强化你的战斗能力。你也可以通过将鼠标悬停在右上角的功勋阶级图标上来查看当前等级的加成效果，下一等级的经验需求和下一等级的加成效果。在提升到最终等级后，你仍然可以不断获取功勋点数，以不断从COSMO技术伦理委员会处获取授权点奖励。\n\n探索者 I: 核心发电 +1MW\n探索者 II: 能量盾伤害减免 +25%\n探索者 III: 步行移动速度 +4 m/s\n开拓者 I: 采矿速度 +10%\n开拓者 II: 电磁武器效果 +20%\n开拓者 III: 水滴能够快速接近远距离的目标\n征服者 I: 采矿速度 +20%\n- 呼叫行星清洗许可\n征服者 II: 恒星炮充能速度 +50%\n征服者 III: 水滴伤害 +100%\n星河卫士: 采矿速度 +40%");
 
             RegisterString("深空来敌介绍5标题", "Meta-Drive", "元驱动");
             RegisterString("深空来敌介绍6标题", "Axiomatic Meta-Drive", "公理级元驱动");
@@ -1078,7 +1080,7 @@ namespace DSP_Battle
             RegisterString("skillR6", "Void Damage", "虚空伤害");
             RegisterString("skillR7", "Droplet Energy Punishment", "水滴超远距耗能惩罚");
             RegisterString("skillR8", "Energy Fluctuation Camouflage", "能量波动屏蔽");
-            RegisterString("skillL4Desc", "The mining consumption reduction effect display here already includes the effect provided by the merit rank. This effect will then multiplies with the effect provided by research.", "此处采矿消耗降低的显示数值已包含功勋阶级提供的消耗降低效果。此效果还将与科技提供的采矿消耗降低效果以乘法叠加。");
+            RegisterString("skillL4Desc", "This value only reflects the authorization point bonus. Merit rank no longer modifies mining consumption.", "此处仅显示授权点提供的采矿消耗降低效果。功勋阶级不再提供采矿消耗加成。");
             RegisterString("skillL6Desc", "This buff will be directly increased to the percentage value of Proliferator Mk.III extra product effect. Mk.I and Mk.II only enjoys a partial buff.", "此效果的数值直接增加至Mk.III型增产剂增产效果的百分比数值上，更低阶增产剂只享受部分加成。");
             RegisterString("skillL7Desc", "This buff will be directly increased to the percentage value of Proliferator Mk.III speedup effect. Mk.I and Mk.II only enjoys a partial buff.", "此效果的数值直接增加至Mk.III型增产剂加速效果的百分比数值上，更低阶增产剂只享受部分加成。");
             RegisterString("skillL8Desc", "This buff will be directly added to the percentage value of Proliferator Mk.III energy consumption effect. Mk.I and Mk.II only enjoys a partial buff.", "此效果的数值直接增加至Mk.III型增产剂能量消耗惩罚的百分比数值上，更低阶增产剂只享受部分加成。");

@@ -99,7 +99,7 @@ namespace DSP_Battle
             }
             else if (rank == 4)
             {
-                //GameMain.history.miningCostRate *= 0.8f;
+                SkillPoints.RefreshMiningSpeed();
                 SkillPoints.RefreshMiningConsumption();
                 if (EventSystem.recorder == null || EventSystem.recorder.protoId == 0) // 第一次升到四级固定获取元驱动
                 {
@@ -113,14 +113,12 @@ namespace DSP_Battle
             }
             else if (rank == 7)
             {
-                //    GameMain.history.miningCostRate /= 0.8f;
-                //    GameMain.history.miningCostRate *= 0.6f;
+                SkillPoints.RefreshMiningSpeed();
                 SkillPoints.RefreshMiningConsumption();
             }
             else if (rank == 10)
             {
-                //GameMain.history.miningCostRate /= 0.6f;
-                //GameMain.history.miningCostRate *= 0.2f;
+                SkillPoints.RefreshMiningSpeed();
                 SkillPoints.RefreshMiningConsumption();
             }
             if (rank > 8 && Utils.RandDouble() < 0.3 && EventSystem.tickFromLastRelic > 108000)
@@ -146,23 +144,18 @@ namespace DSP_Battle
                 }
                 else if (rank == 4)
                 {
-                    //GameMain.history.miningCostRate /= 0.8f;
+                    SkillPoints.RefreshMiningSpeed();
                 }
                 else if (rank == 5)
                 {
                     GameMain.history.magneticDamageScale -= 0.2f;
                 }
-                else if (rank == 7)
-                {
-                    //GameMain.history.miningCostRate /= 0.6f;
-                    //GameMain.history.miningCostRate *= 0.8f;
-                }
                 else if (rank == 10)
                 {
-                    //GameMain.history.miningCostRate /= 0.2f;
-                    //GameMain.history.miningCostRate *= 0.6f;
+                    SkillPoints.RefreshMiningSpeed();
                 }
                 rank -= 1;
+                SkillPoints.RefreshMiningSpeed();
                 SkillPoints.RefreshMiningConsumption();
                 UIRank.ForceRefreshAll();
             }
