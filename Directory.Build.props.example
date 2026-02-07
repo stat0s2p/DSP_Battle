@@ -1,0 +1,15 @@
+<Project>
+  <PropertyGroup>
+    <!-- 游戏根目录（含 DSPGAME.exe / DSPGAME_Data） -->
+    <DSP_GAME_DIR>C:\Program Files (x86)\Steam\steamapps\common\Dyson Sphere Program</DSP_GAME_DIR>
+
+    <!-- 可选：BepInEx 根目录（默认由 DSP_PLUGIN_DIR 自动推导到其上级目录） -->
+    <!-- <DSP_BEPINEX_DIR>C:\Users\<you>\AppData\Roaming\Thunderstore Mod Manager\DataFolder\DysonSphereProgram\profiles\dsp\BepInEx</DSP_BEPINEX_DIR> -->
+
+    <!-- 必填：plugins 目录（BepInEx相关引用统一从这里解析） -->
+    <DSP_PLUGIN_DIR>C:\Users\YOUR_USER\AppData\Roaming\Thunderstore Mod Manager\DataFolder\DysonSphereProgram\profiles\dsp\BepInEx\plugins</DSP_PLUGIN_DIR>
+
+    <!-- 可选：true 时构建后自动复制到 GamePluginsDir -->
+    <DeployToGameDir>false</DeployToGameDir>
+  </PropertyGroup>
+</Project>

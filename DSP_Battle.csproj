@@ -13,12 +13,36 @@
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
+    <DSP_GAME_DIR Condition="'$(DSP_GAME_DIR)' == ''"></DSP_GAME_DIR>
+    <DSP_GAME_DIR Condition="'$(DSP_GAME_DIR)' != ''">$([System.String]::Copy('$(DSP_GAME_DIR)').Trim().Trim('&#x22;'))</DSP_GAME_DIR>
+    <DSP_BEPINEX_DIR Condition="'$(DSP_BEPINEX_DIR)' == ''"></DSP_BEPINEX_DIR>
+    <DSP_BEPINEX_DIR Condition="'$(DSP_BEPINEX_DIR)' != ''">$([System.String]::Copy('$(DSP_BEPINEX_DIR)').Trim().Trim('&#x22;'))</DSP_BEPINEX_DIR>
+    <DSP_PLUGIN_DIR Condition="'$(DSP_PLUGIN_DIR)' == ''"></DSP_PLUGIN_DIR>
+    <DSP_PLUGIN_DIR Condition="'$(DSP_PLUGIN_DIR)' != ''">$([System.String]::Copy('$(DSP_PLUGIN_DIR)').Trim().Trim('&#x22;'))</DSP_PLUGIN_DIR>
+    <DeployToGameDir Condition="'$(DeployToGameDir)' == ''">false</DeployToGameDir>
+
+    <GameManagedDir Condition="'$(DSP_GAME_DIR)' != ''">$(DSP_GAME_DIR)\DSPGAME_Data\Managed\</GameManagedDir>
+    <GamePluginsDir Condition="'$(DSP_PLUGIN_DIR)' != ''">$(DSP_PLUGIN_DIR)\</GamePluginsDir>
+    <GameBepInExDir Condition="'$(DSP_BEPINEX_DIR)' != ''">$(DSP_BEPINEX_DIR)\</GameBepInExDir>
+    <GameBepInExDir Condition="'$(GameBepInExDir)' == '' and '$(DSP_PLUGIN_DIR)' != ''">$([System.IO.Path]::GetFullPath('$(DSP_PLUGIN_DIR)\..'))\</GameBepInExDir>
+    <GameCoreDir Condition="'$(GameBepInExDir)' != ''">$(GameBepInExDir)core\</GameCoreDir>
+
+    <CommonApiDll>$(GamePluginsDir)CommonAPI\CommonAPI.dll</CommonApiDll>
+    <CommonApiDll Condition="!Exists('$(CommonApiDll)')">$(GamePluginsDir)CommonAPI-CommonAPI\CommonAPI.dll</CommonApiDll>
+    <DSPModSaveDll>$(GamePluginsDir)DSPModSave.dll</DSPModSaveDll>
+    <DSPModSaveDll Condition="!Exists('$(DSPModSaveDll)')">$(GamePluginsDir)CommonAPI-DSPModSave\DSPModSave.dll</DSPModSaveDll>
+    <LDBToolDll>$(GamePluginsDir)LDBTool.dll</LDBToolDll>
+    <LDBToolDll Condition="!Exists('$(LDBToolDll)')">$(GamePluginsDir)xiaoye97-LDBTool\LDBTool.dll</LDBToolDll>
+    <MoreMegaStructureDll>$(GamePluginsDir)MoreMegaStructure.dll</MoreMegaStructureDll>
+    <MoreMegaStructureDll Condition="!Exists('$(MoreMegaStructureDll)')">$(GamePluginsDir)jinxOAO-MoreMegaStructure\MoreMegaStructure.dll</MoreMegaStructureDll>
+    <NebulaApiDll>$(GamePluginsDir)NebulaAPI\NebulaAPI.dll</NebulaApiDll>
+    <NebulaApiDll Condition="!Exists('$(NebulaApiDll)')">$(GamePluginsDir)nebula-NebulaMultiplayerModApi\NebulaAPI.dll</NebulaApiDll>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>D:\SteamLibrary\steamapps\common\Dyson Sphere Program\BepInEx\plugins\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -27,7 +51,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\Steam\steamapps\common\Dyson Sphere Program\BepInEx\plugins\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -35,7 +59,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony20">
-      <HintPath>D:\SteamLibrary\steamapps\common\Dyson Sphere Program\BepInEx\core\0Harmony20.dll</HintPath>
+      <HintPath>$(GameCoreDir)0Harmony20.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp-nstrip">
@@ -44,32 +68,32 @@
     </Reference>
     <Reference Include="BepInEx, Version=5.4.17.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\SteamLibrary\steamapps\common\Dyson Sphere Program\BepInEx\core\BepInEx.dll</HintPath>
+      <HintPath>$(GameCoreDir)BepInEx.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="CommonAPI, Version=1.6.2.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\SteamLibrary\steamapps\common\Dyson Sphere Program\BepInEx\plugins\CommonAPI\CommonAPI.dll</HintPath>
+      <HintPath>$(CommonApiDll)</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="DSPModSave, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\SteamLibrary\steamapps\common\Dyson Sphere Program\BepInEx\plugins\DSPModSave.dll</HintPath>
+      <HintPath>$(DSPModSaveDll)</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="LDBTool, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\SteamLibrary\steamapps\common\Dyson Sphere Program\BepInEx\plugins\LDBTool.dll</HintPath>
+      <HintPath>$(LDBToolDll)</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="MoreMegaStructure, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\SteamLibrary\steamapps\common\Dyson Sphere Program\BepInEx\plugins\MoreMegaStructure.dll</HintPath>
+      <HintPath>$(MoreMegaStructureDll)</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="NebulaAPI, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\SteamLibrary\steamapps\common\Dyson Sphere Program\BepInEx\plugins\NebulaAPI\NebulaAPI.dll</HintPath>
+      <HintPath>$(NebulaApiDll)</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -81,47 +105,47 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
-      <HintPath>D:\SteamLibrary\steamapps\common\Dyson Sphere Program\DSPGAME_Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>$(GameManagedDir)UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.AnimationModule">
-      <HintPath>D:\SteamLibrary\steamapps\common\Dyson Sphere Program\DSPGAME_Data\Managed\UnityEngine.AnimationModule.dll</HintPath>
+      <HintPath>$(GameManagedDir)UnityEngine.AnimationModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.AssetBundleModule">
-      <HintPath>D:\SteamLibrary\steamapps\common\Dyson Sphere Program\DSPGAME_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
+      <HintPath>$(GameManagedDir)UnityEngine.AssetBundleModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.AudioModule">
-      <HintPath>D:\SteamLibrary\steamapps\common\Dyson Sphere Program\DSPGAME_Data\Managed\UnityEngine.AudioModule.dll</HintPath>
+      <HintPath>$(GameManagedDir)UnityEngine.AudioModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>D:\SteamLibrary\steamapps\common\Dyson Sphere Program\DSPGAME_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>$(GameManagedDir)UnityEngine.CoreModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.IMGUIModule">
-      <HintPath>D:\SteamLibrary\steamapps\common\Dyson Sphere Program\DSPGAME_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
+      <HintPath>$(GameManagedDir)UnityEngine.IMGUIModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.InputLegacyModule">
-      <HintPath>D:\SteamLibrary\steamapps\common\Dyson Sphere Program\DSPGAME_Data\Managed\UnityEngine.InputLegacyModule.dll</HintPath>
+      <HintPath>$(GameManagedDir)UnityEngine.InputLegacyModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.ParticleSystemModule">
-      <HintPath>D:\SteamLibrary\steamapps\common\Dyson Sphere Program\DSPGAME_Data\Managed\UnityEngine.ParticleSystemModule.dll</HintPath>
+      <HintPath>$(GameManagedDir)UnityEngine.ParticleSystemModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.TextRenderingModule">
-      <HintPath>D:\SteamLibrary\steamapps\common\Dyson Sphere Program\DSPGAME_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
+      <HintPath>$(GameManagedDir)UnityEngine.TextRenderingModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>D:\SteamLibrary\steamapps\common\Dyson Sphere Program\DSPGAME_Data\Managed\UnityEngine.UI.dll</HintPath>
+      <HintPath>$(GameManagedDir)UnityEngine.UI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.UIModule">
-      <HintPath>D:\SteamLibrary\steamapps\common\Dyson Sphere Program\DSPGAME_Data\Managed\UnityEngine.UIModule.dll</HintPath>
+      <HintPath>$(GameManagedDir)UnityEngine.UIModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -178,7 +202,43 @@
     <EmbeddedResource Include="battlebgm" />
     <None Include="packages.config" />
     <None Include="README.md" />
+    <None Include="Directory.Build.props.example" />
   </ItemGroup>
   <ItemGroup />
+  <Target Name="ValidateGameDirectory" BeforeTargets="ResolveAssemblyReferences">
+    <Error Condition="'$(DSP_GAME_DIR)' == ''" Text="DSP_GAME_DIR is required and must point to game root (contains DSPGAME.exe and DSPGAME_Data)." />
+    <Error Condition="'$(DSP_PLUGIN_DIR)' == ''" Text="DSP_PLUGIN_DIR is required and must point to BepInEx plugins directory." />
+    <Error Condition="!Exists('$(GameCoreDir)BepInEx.dll')" Text="BepInEx.dll not found at $(GameCoreDir)BepInEx.dll. Set DSP_BEPINEX_DIR (or ensure DSP_PLUGIN_DIR is inside a BepInEx folder containing core)." />
+    <Error Condition="!Exists('$(GameManagedDir)UnityEngine.CoreModule.dll')" Text="Unity managed assemblies not found at $(GameManagedDir). Check DSP_GAME_DIR (should point to Dyson Sphere Program root)." />
+    <Warning Condition="!Exists('$(CommonApiDll)')" Text="CommonAPI.dll not found. Expected one of: $(GamePluginsDir)CommonAPI\\CommonAPI.dll or $(GamePluginsDir)CommonAPI-CommonAPI\\CommonAPI.dll" />
+    <Warning Condition="!Exists('$(DSPModSaveDll)')" Text="DSPModSave.dll not found. Expected one of: $(GamePluginsDir)DSPModSave.dll or $(GamePluginsDir)CommonAPI-DSPModSave\\DSPModSave.dll" />
+    <Warning Condition="!Exists('$(LDBToolDll)')" Text="LDBTool.dll not found. Expected one of: $(GamePluginsDir)LDBTool.dll or $(GamePluginsDir)xiaoye97-LDBTool\\LDBTool.dll" />
+  </Target>
+  <Target Name="ValidateGameDeploySettings" BeforeTargets="DeployToGame" Condition="'$(DeployToGameDir)' == 'true' and ('$(DSP_GAME_DIR)' == '' or '$(DSP_PLUGIN_DIR)' == '')">
+    <Error Text="DSP_GAME_DIR and DSP_PLUGIN_DIR must be set when DeployToGameDir=true." />
+  </Target>
+  <Target Name="DeployToGame" AfterTargets="Build" Condition="'$(DeployToGameDir)' == 'true' and '$(DSP_GAME_DIR)' != '' and '$(DSP_PLUGIN_DIR)' != ''">
+    <ItemGroup>
+      <DeployFiles Include="$(TargetPath)" />
+      <DeployFiles Include="$(TargetDir)$(TargetName).pdb" Condition="Exists('$(TargetDir)$(TargetName).pdb')" />
+    </ItemGroup>
+    <MakeDir Directories="$(GamePluginsDir)" Condition="!Exists('$(GamePluginsDir)')" />
+    <Copy SourceFiles="@(DeployFiles)" DestinationFolder="$(GamePluginsDir)" SkipUnchangedFiles="true" />
+  </Target>
+  <Target Name="PrintResolvedPaths">
+    <Message Importance="high" Text="DSP_GAME_DIR=$(DSP_GAME_DIR)" />
+    <Message Importance="high" Text="DSP_BEPINEX_DIR=$(DSP_BEPINEX_DIR)" />
+    <Message Importance="high" Text="DSP_PLUGIN_DIR=$(DSP_PLUGIN_DIR)" />
+    <Message Importance="high" Text="GameBepInExDir=$(GameBepInExDir)" />
+    <Message Importance="high" Text="GameCoreDir=$(GameCoreDir)" />
+    <Message Importance="high" Text="GameManagedDir=$(GameManagedDir)" />
+    <Message Importance="high" Text="GamePluginsDir=$(GamePluginsDir)" />
+    <Message Importance="high" Text="CommonApiDll=$(CommonApiDll)" />
+    <Message Importance="high" Text="DSPModSaveDll=$(DSPModSaveDll)" />
+    <Message Importance="high" Text="LDBToolDll=$(LDBToolDll)" />
+    <Message Importance="high" Text="MoreMegaStructureDll=$(MoreMegaStructureDll)" />
+    <Message Importance="high" Text="NebulaApiDll=$(NebulaApiDll)" />
+    <Message Importance="high" Text="DeployToGameDir=$(DeployToGameDir)" />
+  </Target>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
